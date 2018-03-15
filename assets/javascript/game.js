@@ -1,46 +1,67 @@
 // variables
 // ================================================================================================
 // the object letters to choose from 
-var  letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+var  letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
-// start with a score of 0 wins, 0 losses, 9 guesses, letters guessed
+// start with a score of 0 wins, 0 loses, 9 guesses, letters guessed
 var wins = 0;
-var losses = 0;
-var guesses =9;
-var guessedLetters = []
+var loses = 0;
+var guesses = 9;
+var guessedLetters = [];
+var cpuChoice; 
 
 
-
-//functions
-// ================================================================================================
-// function to start the game 
 reset();
 display();
 
+document.onkeyup = function(event) {
+    var userGuess = event.key;
+    guessedLetters.push(userGuess)
+    if (userGuess === cpuChoice){
+        wins();
+    }
+    else if (guesses - 1 === 0) {
+        guesses();
+    }
+    if (guesses === 0){
+        lose();
+    }
+    display();
+
+}
+
 function display () {
     var winsP = document.getElementById("wins");
-    var losesP = document.getElementById("losses");
+    var losesP = document.getElementById("loses");
+    var guesses = document.getElementById("guesses");
+    var letterGuessed = document.getElementById("guessed");
+    winsP.innerHTML = wins;
+    loses.innerHTML = loses;
+    guesses.innerHTML = guesses;
+    letterGuessed.innerHTML = guessedLetters.join(',');
+}
+
+function win() {
+    wins++;
+    reset();
+}
+
+function lose() {
+    loses++;
+    reset();
+}
+
+function wrong(guess) {
+    guesses--;
+    guessedLetters.push(guess)
+}
+
+function reset() {
+    guesses = 9;
+    guessedLetters = [];
+    cpuChoice = letters[Math.floor(Math.random() * letters.length)];
+    console.log("Letter to guess:" + cpuChoice);
 }
 
 
-// main process
-//================================================================================================
-// starting the game
-   
 
-    document.onkeyup = function(event) {
-        var userGuess = event.key;
-        guessedLetters.push(userGuess)
-        if (userGUess === cpuChoice){
-            wins();
-        }
-        else {
-            guesses();
-        }
-        if (guesses === 0){
-            losses();
-        }
-
-
-    var html = "<p>Guess what letter I'm thinking of:</p>" + "<p>WIns:" + wins + "</p>" + "<p>Losses:" + losses + "</p>" + "<p>Guesses Remaining:" + guesses + "</p>" + "<p>Guessed Letters:" + guessedLetters.join(','); + "</p>"
-    }
